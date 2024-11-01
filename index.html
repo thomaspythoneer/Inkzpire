@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>InkzPire - Events</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F4F4F4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        /* Header Styling */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 40px;
+            background-color: #f5f5dc; /* Light cream */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFA500;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links ul {
+            list-style: none;
+            display: flex;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .nav-links ul li {
+            margin-left: 20px;
+        }
+
+        .nav-links ul li a {
+            text-decoration: none;
+            color: #0056b3;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .menu-icon {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .menu-icon .hamburger {
+            width: 30px;
+            height: 3px;
+            background-color: #FFA500;
+            position: relative;
+        }
+
+        .menu-icon .hamburger::before,
+        .menu-icon .hamburger::after {
+            content: '';
+            width: 30px;
+            height: 3px;
+            background-color: #FFA500;
+            position: absolute;
+            left: 0;
+            transition: 0.3s ease;
+        }
+
+        .menu-icon .hamburger::before {
+            top: -8px;
+        }
+
+        .menu-icon .hamburger::after {
+            bottom: -8px;
+        }
+
+        .menu-icon.open .hamburger {
+            background-color: transparent;
+        }
+
+        .menu-icon.open .hamburger::before {
+            transform: rotate(45deg);
+            top: 0;
+        }
+
+        .menu-icon.open .hamburger::after {
+            transform: rotate(-45deg);
+            bottom: 0;
+        }
+
+        .nav-links.active {
+            visibility: visible;
+            opacity: 1;
+            position: absolute;
+            top: 60px;
+            background-color: #FFA500;
+            padding: 20px;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            z-index: 9;
+        }
+
+        /* Flexbox to align elements */
+        .header-left, .header-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left nav ul,
+        .header-right nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .header-left nav ul li,
+        .header-right nav ul li {
+            margin-left: 20px;
+        }
+
+        .header-left nav ul li a,
+        .header-right nav ul li a {
+            text-decoration: none;
+            color: #FF7F50; /* Orange for the nav links */
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .header-left nav ul li a:hover,
+        .header-right nav ul li a:hover {
+            color: #B84A00; /* Darker orange for hover */
+            transform: scale(1.1); /* Slight zoom effect on hover */
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto; /* Pushes the right items to the right */
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-radius: 50px;
+            padding: 5px 10px;
+            margin-right: 20px;
+            transition: width 0.3s ease;
+        }
+
+        .search-bar input {
+            border: none;
+            background: none;
+            padding: 10px;
+            font-size: 16px;
+            width: 0; /* Start with zero width */
+            transition: width 0.3s ease;
+            opacity: 0; /* Start hidden */
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            width: 200px; /* Expand to this width on focus */
+            opacity: 1; /* Show input on focus */
+        }
+
+        .search-bar button {
+            background-color: #ffa500;
+            border: none;
+            color: white;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #B84A00;
+        }
+
+        /* Hamburger Animation */
+        .menu-icon.open .hamburger {
+            background-color: transparent;
+        }
+
+        .menu-icon.open .hamburger::before {
+            transform: rotate(45deg);
+            top: 0;
+        }
+
+        .menu-icon.open .hamburger::after {
+            transform: rotate(-45deg);
+            bottom: 0;
+        }
+
+
+        /* Flexbox to center logo and position nav items */
+        .header-left, .header-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start; /* Align left for .header-left */
+        }
+
+        .header-right {
+            justify-content: flex-end; /* Align right for .header-right */
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #FF7F50; /* Orange for the logo */
+            text-align: center;
+            flex: 0;
+        }
+
+        /* Navigation Styles */
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #FF7F50; /* Orange for the nav links */
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #B84A00; /* Darker orange for hover */
+            transform: scale(1.1); /* Slight zoom effect on hover */
+        }
+
+        /* Add padding for the centered logo */
+        .logo {
+            padding: 0 20px; /* Add padding to avoid overlap */
+        }
+
+        header:hover{
+            border-color: #ff7f50;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0056b3;
+            animation: fadeInLogo 2s ease-in-out; /* Fade-in animation for the logo */
+        }
+
+        /* Apply the animation to the logo */
+        .inkzpire-logo {
+            animation: fadeInLogo 1s ease-out forwards; /* Adjust duration and easing */
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #0056b3;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+        nav ul li a:hover {
+            color: #B84A00; /* Darker orange for hover */
+            transform: scale(1.1); /* Slight zoom effect on hover */
+    
+        }
+        nav ul li {
+            opacity: 0;
+            animation: fadeInText 1.5s ease-in-out forwards; 
+        }
+        /* Hero Section */
+        .hero {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            background: url('pic.jpg') no-repeat center center/cover;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .cta-btn {
+            background-color: #FFA500;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .cta-btn:hover { background-color: #0056b3; }
+        /* Sign up and Login */
+        .sign-up-btn, .login-btn {
+            background-color: #FFA500; /* Orange background color */
+            color: white; /* Text color */
+            border: none;
+            padding: 10px 20px; /* Padding for the button */
+            border-radius: 25px; /* Curvy rectangle shape */
+            margin-left: 20px; /* Spacing between buttons */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+
+        .sign-up-btn:hover, .login-btn:hover {
+            background-color: #0056b3 /* Dark blue background on hover */
+        }        
+
+        /*Upcoming events*/
+        .important-events {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .important-events h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .details-button {
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .details-button:hover {
+            background-color: #0056b3;
+        }
+
+        .event-details {
+            display: block; /* Ensure the div is a block element */
+            max-height: 0; /* Start with max-height of 0 for transition */
+            opacity: 0; /* Start with opacity of 0 for fade-out effect */
+            overflow: hidden; /* Hide overflow to prevent content from being visible */
+            transition: max-height 0.3s ease, opacity 0.3s ease; /* Smooth transition for both max-height and opacity */
+        }
+
+        .event-details.visible {
+            max-height: 500px; /* Set a max-height when visible (adjust as needed) */
+            opacity: 1; /* Set opacity for fade-in effect */
+        }        
+        /* Events Section */
+        .container {
+            display: flex;
+            gap: 20px;
+            justify-content: center; /* Centering the content */
+        }
+
+        .calendar {
+            width: 300px;
+            background-color: #FFa500;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar h2 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .calendar table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar th {
+            background-color: #ff8c00;
+            color: white;
+            padding: 12px 0;
+            font-weight: normal;
+        }
+
+        .calendar td {
+            text-align: center;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .calendar td:hover {
+            background-color: #ffb84d;
+            border-radius: 5px;
+        }
+
+        .events {
+            flex-grow: 1;
+            background-color: #fff5e1;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+        }
+
+        .events.visible {
+            opacity: 1;
+            max-height: 500px; /* Adjust based on content */
+        }
+
+        .events h2 {
+            color: #FFa500;
+            margin-bottom: 10px;
+        }
+
+        .event-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ffefcc;
+            border-left: 4px solid #FFa500;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        .event-item:hover {
+            transform: scale(1.02);
+        }
+
+        .event-title {
+            font-size: 18px;
+            color: #FFa500;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .event-description {
+            margin: 5px 0 0;
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack on smaller screens */
+                align-items: center;
+            }
+
+            .calendar, .events {
+                width: 100%; /* Full width on smaller screens */
+                max-width: 400px; /* Limit max width */
+            }
+        }
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2A4D69, #3B688C);
+            color: white;
+            padding: 50px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Footer Sections */
+        .footer-about,
+        .footer-links,
+        .footer-newsletter,
+        .footer-social {
+            flex: 1;
+            min-width: 250px;
+            margin: 20px 0;
+        }
+
+        /* Section Titles */
+        .footer-about h3,
+        .footer-links h3,
+        .footer-newsletter h3,
+        .footer-social h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #FFA500;
+            position: relative;
+        }
+
+        /* Title Underline Animation */
+        .footer-about h3::after,
+        .footer-links h3::after,
+        .footer-newsletter h3::after,
+        .footer-social h3::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #FFA500;
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s;
+        }
+
+        /* On Hover Expand Animation for Underline */
+        .footer-about h3:hover::after,
+        .footer-links h3:hover::after,
+        .footer-newsletter h3:hover::after,
+        .footer-social h3:hover::after {
+            width: 100px;
+        }
+
+        /* About Text */
+        .footer-about p {
+            font-size: 16px;
+            color: #ccc;
+            line-height: 1.7;
+        }
+
+        /* Quick Links */
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul li a {
+            color: #FFA500;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links ul li a:hover {
+            color: white;
+        }
+
+        /* Newsletter Section */
+        .footer-newsletter form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-newsletter input[type="email"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .footer-newsletter button {
+            padding: 10px;
+            border: none;
+            background-color: #FFA500;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .footer-newsletter button:hover {
+            background-color: #ff7f00;
+        }
+
+        /* Social Media Icons */
+        .footer-social .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            font-size: 20px;
+            color: #FFA500;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: white;
+            transform: scale(1.2);
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            text-align: center;
+            
+            padding: 20px 0;
+            background-color: #1A3244;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+            }
+        }
+
+        .footer-about h3, .footer-links h3 { font-size: 24px; margin-bottom: 15px; color: #FFA500; }
+
+        .footer-about p { font-size: 16px; color: #ccc; }
+
+        .footer-links ul { list-style: none; padding: 0; }
+
+        .footer-links ul li a { color: #FFA500; text-decoration: none; }
+
+        .footer-bottom { text-align: center; padding: 20px 0; background-color: #1A3244; color: #ddd; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="menu-icon">
+                <div class="hamburger"></div>
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#collaborate">Collaborate</a></li>
+                </ul>
+            </div>
+            <div class="logo">InkzPire</div>
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <button>🔍</button>
+                </div>
+                <button class="sign-up-btn">Sign Up</button>
+                <button class="login-btn">Log In</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Upcoming Events</h1>
+            <p>Explore, Engage, and Experience something new!</p>
+            <button class="cta-btn">View All Events</button>
+        </div>
+    </section>
+
+    <!-- Upcoming Important Events and Competitions Section -->
+    <section class="important-events">
+        <h2>Upcoming Important Events, Fests, and Competitions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Event Title</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>National AI Competition</td>
+                    <td>November 15, 2024</td>
+                    <td>IIIT Naya Raipur</td>
+                    <td>
+                        <button class="details-button">View Details</button>
+                        <div class="event-details">
+                            <p>Join us for the National AI Competition where students from various colleges will showcase their AI projects. Exciting prizes await!</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>International Conference on Robotics</td>
+                    <td>December 5, 2024</td>
+                    <td>Virtual</td>
+                    <td>
+                        <button class="details-button">View Details</button>
+                        <div class="event-details">
+                            <p>Participate in discussions with experts from around the world about the latest advancements in robotics technology.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tech Fest 2024</td>
+                    <td>January 20, 2025</td>
+                    <td>IIIT Naya Raipur</td>
+                    <td>
+                        <button class="details-button">View Details</button>
+                        <div class="event-details">
+                            <p>A day full of workshops, talks, and networking opportunities for tech enthusiasts and professionals.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <!-- Events and calendar Section -->
+        <div class="container">
+            <div class="calendar">
+                <h2>Event Calendar</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sun</th>
+                            <th>Mon</th>
+                            <th>Tue</th>
+                            <th>Wed</th>
+                            <th>Thu</th>
+                            <th>Fri</th>
+                            <th>Sat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-date="2024-11-01">1</td>
+                            <td data-date="2024-11-02">2</td>
+                            <td data-date="2024-11-03">3</td>
+                            <td data-date="2024-11-04">4</td>
+                            <td data-date="2024-11-05">5</td>
+                            <td data-date="2024-11-06">6</td>
+                            <td data-date="2024-11-07">7</td>
+                        </tr>
+                        <tr>
+                            <td data-date="2024-11-08">8</td>
+                            <td data-date="2024-11-09">9</td>
+                            <td data-date="2024-11-10">10</td>
+                            <td data-date="2024-11-11">11</td>
+                            <td data-date="2024-11-12">12</td>
+                            <td data-date="2024-11-13">13</td>
+                            <td data-date="2024-11-14">14</td>
+                        </tr>
+                        <tr>
+                            <td data-date="2024-11-15">15</td>
+                            <td data-date="2024-11-16">16</td>
+                            <td data-date="2024-11-17">17</td>
+                            <td data-date="2024-11-18">18</td>
+                            <td data-date="2024-11-19">19</td>
+                            <td data-date="2024-11-20">20</td>
+                            <td data-date="2024-11-21">21</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="events" id="events-section">
+                <h2>Events on <span id="selected-date">Select a date</span></h2>
+                <div id="event-list"></div>
+            </div>
+        </div>
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+          
+          <!-- About Section -->
+          <div class="footer-about">
+            <h3>About InkzPire</h3>
+            <p>InkzPire connects colleges, students, and educators to promote collaboration and innovation in academia. Join us to accelerate your academic journey.</p>
+          </div>
+      
+          <!-- Quick Links Section -->
+          <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">News</a></li>
+              <li><a href="#">Events</a></li>
+              <li><a href="#">Collaborate</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+      
+          <!-- Newsletter Subscription -->
+          <div class="footer-newsletter">
+            <h3>Stay Updated</h3>
+            <p>Subscribe to our newsletter for the latest news and updates from the academic world.</p>
+            <form action="#">
+              <input type="email" placeholder="Enter your email" required>
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+      
+          <!-- Social Media Section -->
+          <div class="footer-social">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+      
+        </div>
+      
+        <!-- Footer Bottom Section -->
+        <div class="footer-bottom">
+          <p>&copy; 2024 InkzPire. All Rights Reserved.</p>
+        </div>
+      </footer>
+
+      <script>
+ 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.details-button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const details = button.nextElementSibling; // Get the next sibling (event details div)
+
+                    // Check if details are currently visible
+                    const isVisible = details.classList.contains('visible');
+
+                    // Hide all other details
+                    const allDetails = document.querySelectorAll('.event-details');
+                    allDetails.forEach(detail => {
+                        detail.classList.remove('visible');
+                        detail.style.maxHeight = null; // Reset max-height
+                        detail.style.opacity = 0; // Reset opacity
+                    });
+
+                    // Show the clicked details if they were not visible
+                    if (!isVisible) {
+                        details.classList.add('visible');
+                        details.style.maxHeight = details.scrollHeight + "px"; // Set max-height to allow transition
+                        details.style.opacity = 1; // Set opacity for fade-in effect
+                    }
+                });
+            });
+        });
+    </script>
+<script src="main1.js"></script>
+<script src="main2.js"></script>
+</body>
+</html>
+

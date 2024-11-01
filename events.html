@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Calendar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="hamburger"></div>
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                    <li><a href="#clubs">Clubs</a></li>
+                </ul>
+            </div>
+            <div class="logo">InkzPire</div>
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <button>🔍</button>
+                </div>
+                <button class="sign-up-btn">Sign Up</button>
+                <button class="login-btn">Log In</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h1>Explore Upcoming Events</h1>
+            <p>Stay updated with the latest events and participate in academic collaborations.</p>
+        </section>
+
+        <div class="calendar-container">
+            <h2>Event Calendar</h2>
+            <div class="calendar" id="calendar"></div>
+        </div>
+
+        <div class="event-details" id="eventDetails">
+            <!-- Event details will be populated here -->
+        </div>
+
+        <section class="featured-events">
+            <h2>Featured Events</h2>
+            <div class="event-card">
+                <h3>Annual Science Fair</h3>
+                <p>Date: March 10, 2023</p>
+                <p>Join us for a day of innovation and creativity at our Annual Science Fair.</p>
+                <button onclick="showEventDetails('Annual Science Fair')">Learn More</button>
+            </div>
+            <div class="event-card">
+                <h3>Inter-College Debate Competition</h3>
+                <p>Date: March 15, 2023</p>
+                <p>Put your debating skills to the test in our inter-college competition.</p>
+                <button onclick="showEventDetails('Inter-College Debate Competition')">Learn More</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <ul>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#terms">Terms of Service</a></li>
+            </ul>
+            <div class="social-media">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
